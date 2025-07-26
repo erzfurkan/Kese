@@ -44,7 +44,7 @@ public class UpdateChecker {
             lines.add("Lütfen son sürüme güncelleyin.");
             lines.add(" ");
             lines.add("İndir:");
-            lines.add("  " + "https://github.com/lyneez/Kese/releases/latest");
+            lines.add("  " + "https://github.com/erzfurkan/Kese/releases/latest");
 
             printNiceBoxToConsole(plugin.getLogger(), lines);
         }
