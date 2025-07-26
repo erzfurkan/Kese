@@ -18,46 +18,43 @@ public class Database {
         } catch (ClassNotFoundException ex) {
             throw new IllegalStateException("Failed to load SQLite JDBC class", ex);
         }
-
         File database = new File(plugin.getDataFolder(), "database.db");
-
         try {
             database.getParentFile().mkdirs();
             database.createNewFile();
         } catch (IOException e) {
             plugin.getLogger().log(Level.SEVERE, "File write error: database.db");
         }
-
         connection = DriverManager.getConnection("jdbc:sqlite:" + database);
     }
 
     public void setup() throws SQLException {
         try (Statement s = connection.createStatement()) {
             s.executeUpdate("CREATE TABLE IF NOT EXISTS economy (" +
-                    "`uuid` varchar(32) NOT NULL, `balance` double(1000) NOT NULL, PRIMARY KEY (`uuid`));");
+                    "`uuid` varchar(36) NOT NULL, `balance` double NOT NULL, PRIMARY KEY (`uuid`));");
         }
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
+    public Connection getConnection() { return connection; }
 
     public boolean isOpen() {
-        if (connection == null) {
-            return false;
-        }
+        if (connection == null) return false;
+        try { return !connection.isClosed(); }
+        catch (SQLException exception) { return false; }
+    }
 
-        try {
-            return !connection.isClosed();
-        } catch (SQLException exception) {
-            return false;
+    public void disconnect() {
+        if (connection != null) {
+            try {
+                if (!connection.isClosed())
+                    connection.close();
+            } catch (SQLException ex) {
+                plugin.getLogger().warning("Veritabanı bağlantısı kapatılamadı: " + ex.getMessage());
+            }
         }
     }
 
     public void report(SQLException exception) {
         plugin.getLogger().log(Level.SEVERE, "Unhandled exception: " + exception.getMessage(), exception);
     }
-
-
 }
-

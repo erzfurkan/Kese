@@ -21,7 +21,6 @@ public final class Kese extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
         instance = this;
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
@@ -33,16 +32,14 @@ public final class Kese extends JavaPlugin {
             db.setup();
         } catch (SQLException exception) {
             db.report(exception);
+            getLogger().severe("Veritabanı başlatılamadı, ekonomi sistemi devre dışı!");
         }
 
-        // bStats
-        Metrics metrics = new Metrics(this, 13183);
-
-        // Update checker
+        // bStats, update checker vs...
+        new Metrics(this, 13183);
         UpdateChecker.check(this);
         UpdateChecker.sendToConsole(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> UpdateChecker.check(this), 1728000,
-                1728000); // 1 gün
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> UpdateChecker.check(this), 1728000, 1728000);
 
         // Vault integration
         economy = new KeseVaultEconomy();
@@ -55,18 +52,16 @@ public final class Kese extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
         try {
-            db.getConnection().close();
-        } catch (SQLException exception) {
-            db.report(exception);
+            if (economy != null) economy.saveDirtyBalances();
+            if (economy != null) economy.shutdown();
+            if (db != null) db.disconnect();
+        } catch (Exception exception) {
+            if (db != null) db.report(exception instanceof SQLException ? (SQLException)exception : new SQLException(exception));
         }
     }
 
-    public static Kese getInstance() {
-        return instance;
-    }
-    public Database getDatabase() { return db;}
-    public KeseVaultEconomy getEconomy() { return economy;}
-
+    public static Kese getInstance() { return instance; }
+    public Database getDatabase() { return db; }
+    public KeseVaultEconomy getEconomy() { return economy; }
 }

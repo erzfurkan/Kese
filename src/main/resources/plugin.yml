@@ -1,31 +1,34 @@
 name: Kese
 version: '${project.version}'
 main: me.lynes.kese.Kese
-api-version: 1.13
-authors: [ Lynes ]
-depend: [ Vault ]
-loadbefore: [Towny] # townynin önceden yüklenmemesi için
-description: altın tabanlı yarı fiziksel yarı sanal ekonomi eklentisi
-
+api-version: 1.20
+authors: [Lynes, Sanic]
+depend: [Vault]
+loadbefore: [Towny] # Towny'nin Kese'den sonra yüklenmesi için
+description: Altın tabanlı yarı fiziksel yarı sanal ekonomi eklentisi
 commands:
   kese:
     usage: /<command>
     permission: kese.player
+    description: Kese işlemleri
   altin:
-   usage: /<command>
-   permission: kese.player
+    usage: /<command>
+    permission: kese.player
+    description: Altın işlemleri
   keseadmin:
     usage: /<command>
     permission: kese.admin
-
+    description: Yönetici komutu
 permissions:
   kese.*:
+    description: Tüm Kese yetkileri
     children:
       kese.player: true
       kese.admin: true
     default: op
   kese.player:
+    description: Oyuncu yetkisi
     default: true
   kese.admin:
+    description: Admin yetkisi
     default: op
-
