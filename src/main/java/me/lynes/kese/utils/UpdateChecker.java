@@ -54,11 +54,11 @@ public class UpdateChecker {
         String currentVersion = plugin.getDescription().getVersion();
 
         if (!upToDate) {
-            final ComponentBuilder lore = new ComponentBuilder("Link: ").bold(true).append("https://github.com/lyneez/Kese/releases/latest").bold(false);
+            final ComponentBuilder lore = new ComponentBuilder("Link: ").bold(true).append("https://github.com/erzfurkan/Kese/releases/latest").bold(false);
             final TextComponent component = new TextComponent("İndirmek için tıkla");
             component.setBold(true);
             component.setColor(net.md_5.bungee.api.ChatColor.GOLD);
-            component.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/lyneez/Kese/releases/latest"));
+            component.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/erzfurkan/Kese/releases/latest"));
             component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, lore.create()));
 
             player.sendMessage(ChatColor.GOLD + "Kesenin" + ChatColor.GRAY + " yeni bir sürümü var.");
@@ -73,7 +73,7 @@ public class UpdateChecker {
         String currentVersion = plugin.getDescription().getVersion();
 
         try {
-            URL url = new URL("https://api.github.com/repos/lyneez/kese/releases");
+            URL url = new URL("https://api.github.com/repos/erzfurkan/kese/releases");
             InputStream is = url.openStream();
             InputStreamReader ir = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(ir);
